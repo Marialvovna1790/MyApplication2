@@ -39,11 +39,12 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="20dp"
-        android:layout_marginBottom="18dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="35dp"
+        android:fontFamily="@font/montserrat"
         android:text="@string/text_buttom"
         android:textColor="@color/text_buttom"
-        android:textSize="15sp" />
+        android:textSize="16sp" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -51,7 +52,6 @@
         android:layout_above="@id/text_bottom"
         android:layout_margin="15dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="25dp"
         android:orientation="horizontal">
 
 
@@ -59,17 +59,23 @@
             android:id="@+id/btnSignIn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:layout_marginRight="5dp"
-            android:text="@string/btnSingIn" />
+            android:layout_weight="1"
+            android:background="@drawable/btn_sign_in"
+            android:fontFamily="@font/montserrat"
+            android:text="@string/btnSingIn"
+            android:textColor="@android:color/white" />
 
         <Button
             android:id="@+id/btnRegister"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:layout_marginLeft="5dp"
-            android:text="@string/btnRegister" />
+            android:layout_weight="1"
+            android:background="@drawable/btn_register"
+            android:fontFamily="@font/montserrat"
+            android:text="@string/btnRegister"
+            android:textColor="@android:color/white" />
     </LinearLayout>
 
 </RelativeLayout>
