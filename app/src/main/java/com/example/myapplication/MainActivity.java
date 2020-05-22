@@ -11,7 +11,10 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.RelativeLayout;
 
+import com.example.myapplication.Models.User;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -114,8 +117,36 @@ public class MainActivity extends AppCompatActivity {
                     return;
 
                 }
+
+                // регистрация пользователя
+
+                auth.createUserWithEmailAndPassword(email.getText().toString(), pass.getText().toString())
+                        .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
+                            @Override
+                            public void onSuccess(AuthResult authResult) { //обработчик события onSuccess вызовет функцию то если пользователь успешно добавлен в бд
+                                //создаем объект на основе классса Юзер
+                                User user = new User();
+                                user.setEmail(email.getText().toString());
+                                user.setName(name.getText().toString());
+                                user.setPass(pass.getText().toString());
+                                user.setPhone(phone.getText().toString());
+
+                                users.child(user.getEmail()) //ключ для рользователя - его емейл
+                                        .setValue(user)
+                                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                            @Override
+                                            public void onSuccess(Void aVoid) {
+                                                Snackbar.make(root, "Пользователь добавлен", Snackbar.LENGTH_SHORT).show();
+                                            }
+                                        });
+
+
+                            }
+                        });
             }
 
         });
+
+        dialog.show();
     }
 }
