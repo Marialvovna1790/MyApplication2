@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "488248425237",
+    "firebase_url": "https://rosoboronexport-b992f.firebaseio.com",
+    "project_id": "rosoboronexport-b992f",
+    "storage_bucket": "rosoboronexport-b992f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:488248425237:android:4b0d0237ab84d7c452c71c",
+        "android_client_info": {
+          "package_name": "com.example.myapplication"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "488248425237-tetf1bdhm8pvum8ulrq9remde2cbtfvv.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.myapplication",
+            "certificate_hash": "f13f83c12cd537e17ba407680a14cda46346ee2e"
+          }
+        },
+        {
+          "client_id": "488248425237-ucv1lknhklnddlqtrrfejau7t6gj3m0l.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDDqb7JMAOlcPduw2PuQZcLfuTye5A5UFA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "488248425237-ucv1lknhklnddlqtrrfejau7t6gj3m0l.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
