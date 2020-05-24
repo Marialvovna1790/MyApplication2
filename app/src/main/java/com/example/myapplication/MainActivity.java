@@ -231,7 +231,12 @@ public class MainActivity extends AppCompatActivity {
 
 
                             }
-                        });
+                        }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Snackbar.make(root,"ошибка регистрации." + e.getMessage(), Snackbar.LENGTH_LONG).show();
+                    }
+                });
             }
 
         });
