@@ -1,17 +1,21 @@
 package com.example.myapplication;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.RelativeLayout;
 
 import com.example.myapplication.Models.User;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.AuthResult;
@@ -43,18 +47,94 @@ public class MainActivity extends AppCompatActivity {
         db = FirebaseDatabase.getInstance(); //подключаемся к базе данных
         users = db.getReference("Users");
 
+        btnSignIn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showSignInWindow();
+            }
+        });
+
         btnRegister.setOnClickListener(new View.OnClickListener() { //обработчик событий
             @Override
             public void onClick(View v) {
                 //тута вызываем функцию. позже реализую
                 showRegisterWindow();
 
-
             }
+
+
         });
 
 
     }
+
+    private void showSignInWindow() {
+
+        AlertDialog.Builder dialog = new AlertDialog.Builder(this);
+        dialog.setTitle("Войти");
+        dialog.setMessage("Введите данные для входа");
+
+        LayoutInflater inflater = LayoutInflater.from(this);
+        View sing_in_window = inflater.inflate(R.layout.sign_in_window, null); //внутрь переменной регвин мы получаем при помощи объекта инфлэйтер  шаблон с формочкой
+        dialog.setView(sing_in_window); //передаем объект
+        final MaterialEditText email = sing_in_window.findViewById(R.id.emailField); //final - переменная константа
+        final MaterialEditText pass = sing_in_window.findViewById(R.id.passField);
+
+
+        dialog.setNegativeButton("Oтменить", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int which) { // сработает, когда нажмем на "отменить"
+                dialogInterface.dismiss(); // окно будет скрыто при нажатии на кнопку
+
+            }
+
+        });
+
+        dialog.setPositiveButton("Войти", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int which) {
+                if(TextUtils.isEmpty(email.getText().toString())) {
+                    Snackbar.make(root, "Введите вашу почту", Snackbar.LENGTH_SHORT).show();
+                    return;
+
+                }
+
+
+                if(pass.getText().toString().length() < 5) {
+                    Snackbar.make(root, "Введите пароль, который более 5 символов", Snackbar.LENGTH_SHORT).show();
+                    return;
+
+                }
+
+
+               auth.signInWithEmailAndPassword(email.getText().toString(), pass.getText().toString())
+               .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
+                   @Override
+                   public void onSuccess(AuthResult authResult) {
+                       startActivity(new Intent(MainActivity.this, MapActivity.class));
+                       finish();
+
+                   }
+
+               }).addOnFailureListener(new OnFailureListener() {
+                   @Override
+                   public void onFailure(@NonNull Exception e) {
+                       Snackbar.make(root, "ошибка хуй сосии" + e.getMessage(), Snackbar.LENGTH_LONG).show();
+                   }
+               });
+            }
+
+        });
+
+        dialog.show();
+
+    }
+
+
+
+
+
+
 
     private void showRegisterWindow() {
         AlertDialog.Builder dialog = new AlertDialog.Builder(this);
@@ -121,6 +201,14 @@ public class MainActivity extends AppCompatActivity {
                 // регистрация пользователя
 
                 auth.createUserWithEmailAndPassword(email.getText().toString(), pass.getText().toString())
+                        .addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Log.e("err", "error", e);
+                                Snackbar.make(root, e.getLocalizedMessage(), Snackbar.LENGTH_SHORT).show();
+
+                            }
+                        })
                         .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
                             @Override
                             public void onSuccess(AuthResult authResult) { //обработчик события onSuccess вызовет функцию то если пользователь успешно добавлен в бд
@@ -130,8 +218,9 @@ public class MainActivity extends AppCompatActivity {
                                 user.setName(name.getText().toString());
                                 user.setPass(pass.getText().toString());
                                 user.setPhone(phone.getText().toString());
+                                Log.d("ok", "onsuccess");
 
-                                users.child(user.getEmail()) //ключ для рользователя - его емейл
+                                users.child(FirebaseAuth.getInstance().getCurrentUser().getUid()) //ключ для рользователя - его емейл
                                         .setValue(user)
                                         .addOnSuccessListener(new OnSuccessListener<Void>() {
                                             @Override
