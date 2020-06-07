@@ -4,9 +4,11 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -36,6 +38,9 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (isAuthorized()) {
+            startMain();
+        }
         setContentView(R.layout.activity_main);
 
         btnSignIn = findViewById(R.id.btnSignIn);
@@ -111,15 +116,16 @@ public class MainActivity extends AppCompatActivity {
                .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
                    @Override
                    public void onSuccess(AuthResult authResult) {
-                       startActivity(new Intent(MainActivity.this, MapActivity.class));
-                       finish();
+                       setAuthorized(true, MainActivity.this);
+                       PreferenceManager.getDefaultSharedPreferences(MainActivity.this).edit().putBoolean("login_ok", true).apply();
+                       startMain();
 
                    }
 
                }).addOnFailureListener(new OnFailureListener() {
                    @Override
                    public void onFailure(@NonNull Exception e) {
-                       Snackbar.make(root, "ошибка хуй сосии" + e.getMessage(), Snackbar.LENGTH_LONG).show();
+                       Snackbar.make(root, e.getMessage(), Snackbar.LENGTH_LONG).show();
                    }
                });
             }
@@ -130,10 +136,18 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    public static void setAuthorized(boolean isAuthorized, Context context) {
+        PreferenceManager.getDefaultSharedPreferences(context).edit().putBoolean("login_ok", isAuthorized).apply();
+    }
 
+    private boolean isAuthorized() {
+        return PreferenceManager.getDefaultSharedPreferences(this).getBoolean("login_ok", false);
+    }
 
-
-
+    private void startMain() {
+        startActivity(new Intent(MainActivity.this, MapActivity.class));
+        finish();
+    }
 
 
     private void showRegisterWindow() {
@@ -192,8 +206,8 @@ public class MainActivity extends AppCompatActivity {
                 }
 
 
-                if(pass.getText().toString().length() < 5) {
-                    Snackbar.make(root, "Введите пароль, который более 5 символов", Snackbar.LENGTH_SHORT).show();
+                if(pass.getText().toString().length() < 6) {
+                    Snackbar.make(root, "Введите пароль, который более 6 символов", Snackbar.LENGTH_SHORT).show();
                     return;
 
                 }

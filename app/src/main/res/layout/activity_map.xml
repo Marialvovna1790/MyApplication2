@@ -94,7 +94,7 @@
             android:textColor="@android:color/white"
             android:text="Колличество замятий" />
         <Button
-            android:id="@+id/button7"
+            android:id="@+id/exit"
             android:layout_width="300dp"
             android:height="55dp"
             android:layout_height="wrap_content"
