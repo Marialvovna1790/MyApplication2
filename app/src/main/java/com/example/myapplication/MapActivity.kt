@@ -10,7 +10,11 @@ class MapActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_map)
         findViewById<View>(R.id.button1).setOnClickListener {
-            startActivity(Intent(this, BaseListActivity::class.java))
+            startActivity(Intent(this, PrintersActivity::class.java))
+        }
+
+        findViewById<View>(R.id.button2).setOnClickListener {
+            startActivity(Intent(this, ModelsActivity::class.java))
         }
 
         findViewById<View>(R.id.exit).setOnClickListener {

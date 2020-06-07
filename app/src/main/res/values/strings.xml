@@ -6,5 +6,6 @@
     <string name="btnRegister">Зарегистрироваться</string>
     <string name="text_buttom">Войдите в учетную запись</string>
     <string name="cart">Расход картриджа:</string>
+    <string name="cart_model">Расход картриджей:</string>
     <string name="cart_now">Текущее состояние картриджа:</string>
 </resources>

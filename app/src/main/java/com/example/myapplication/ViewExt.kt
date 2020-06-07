@@ -1,5 +1,8 @@
 import android.content.res.Resources
+import android.graphics.Color
 import android.view.View
+import android.widget.ImageView
+import com.example.myapplication.CircleDrawable
 
 @Suppress("UNCHECKED_CAST")
 fun <T : View?> View.view(viewId: Int, onClickListener: ((View) -> Unit)? = null): T {
@@ -14,4 +17,13 @@ fun pxToDp(px: Int): Int {
 
 fun dpToPx(dp: Int): Int {
     return (dp * Resources.getSystem().getDisplayMetrics().density).toInt()
+}
+fun bindColors(black: Pair<ImageView, Long>,
+               red: Pair<ImageView, Long>,
+               blue: Pair<ImageView, Long>,
+               yellow: Pair<ImageView, Long>) {
+    black.first.background = CircleDrawable(Color.BLACK, black.second)
+    blue.first.background = CircleDrawable(Color.BLUE, blue.second)
+    red.first.background = CircleDrawable(Color.RED, red.second)
+    yellow.first.background = CircleDrawable(Color.YELLOW, yellow.second)
 }
