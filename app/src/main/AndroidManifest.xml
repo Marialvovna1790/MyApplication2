@@ -19,6 +19,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".ModelsActivity" />
+        <activity android:name=".JamsActivity" />
     </application>
 
 </manifest>

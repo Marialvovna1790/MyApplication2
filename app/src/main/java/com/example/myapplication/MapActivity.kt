@@ -17,6 +17,10 @@ class MapActivity : AppCompatActivity() {
             startActivity(Intent(this, ModelsActivity::class.java))
         }
 
+        findViewById<View>(R.id.button6).setOnClickListener {
+            startActivity(Intent(this, JamsActivity::class.java))
+        }
+
         findViewById<View>(R.id.exit).setOnClickListener {
             MainActivity.setAuthorized(false, this)
             startActivity(Intent(this, MapActivity::class.java))
