@@ -20,6 +20,7 @@
         </activity>
         <activity android:name=".ModelsActivity" />
         <activity android:name=".JamsActivity" />
+        <activity android:name=".ActivityEnterDate" />
     </application>
 
 </manifest>
