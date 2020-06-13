@@ -19,6 +19,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".ModelsActivity" />
+        <activity android:name=".ActivityPrediction" />
         <activity android:name=".JamsActivity" />
         <activity android:name=".ActivityEnterDate" />
     </application>

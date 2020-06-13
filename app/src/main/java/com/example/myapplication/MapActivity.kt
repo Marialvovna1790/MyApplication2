@@ -2,6 +2,7 @@ package com.example.myapplication
 
 import android.content.Intent
 import android.os.Bundle
+import android.preference.PreferenceActivity
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 
@@ -19,6 +20,10 @@ class MapActivity : AppCompatActivity() {
             startActivity(Intent(this, ActivityEnterDate::class.java).apply {
                 putExtra(CLAZZ, ModelsActivity::class.java)
             })
+        }
+
+        findViewById<View>(R.id.button3).setOnClickListener {
+            startActivity(Intent(this, ActivityPrediction::class.java))
         }
 
         findViewById<View>(R.id.button6).setOnClickListener {
