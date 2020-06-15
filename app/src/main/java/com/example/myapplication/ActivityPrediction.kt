@@ -85,9 +85,11 @@ class ActivityPrediction : AppCompatActivity(R.layout.activity_prediction) {
                 dialog!!.show()
                 val client = Socket("127.0.0.1", 9999)
                 client.outputStream.write("$colorSelected,$dep,$month".toByteArray())
+                val days = Scanner(client.getInputStream()).nextLong()
                 client.close()
                 Handler(Looper.getMainLooper()).post {
                     dialog.dismiss()
+                findViewById<TextView>(R.id.prediction).text = days.toString()
                 }
             }
 //                findViewById<TextView>(R.id.prediction).text = Random.nextInt(10, 40).toString()
