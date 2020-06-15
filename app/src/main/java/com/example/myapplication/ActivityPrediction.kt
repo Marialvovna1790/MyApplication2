@@ -16,14 +16,19 @@ import com.afollestad.materialdialogs.color.colorChooser
 import com.afollestad.materialdialogs.datetime.datePicker
 import com.afollestad.materialdialogs.list.listItems
 import dmax.dialog.SpotsDialog
+import java.net.Socket
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.concurrent.thread
 import kotlin.random.Random
 
 class ActivityPrediction : AppCompatActivity(R.layout.activity_prediction) {
 
     val colors = intArrayOf(BLACK, CYAN, MAGENTA, BLUE)
 
+    lateinit var colorSelected: String
+    lateinit var dep: String
+    lateinit var month: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,6 +36,7 @@ class ActivityPrediction : AppCompatActivity(R.layout.activity_prediction) {
             MaterialDialog(this).show {
                 title(text = "Выберите цвет")
                 colorChooser(colors) { dialog, color ->
+                    colorSelected = color.toString()
                     view.background = ColorDrawable(color)
                     if (color == Color.BLACK) {
                         (view as TextView).setTextColor(Color.WHITE)
@@ -46,7 +52,10 @@ class ActivityPrediction : AppCompatActivity(R.layout.activity_prediction) {
             MaterialDialog(this).show {
                 title(text = "Выберите отдел")
                 listItems(items = listOf("Общий отдел", "Отдел безопасности" , "Отдел по работе с клиентами", "Технический отдел", "Гендиректор"),
-                        waitForPositiveButton = true, selection = { _, _, t -> (view as TextView).text = t })
+                        waitForPositiveButton = true, selection = { _, _, t -> (
+                        view as TextView).text = t
+                    dep = t.toString()
+                })
 
                 positiveButton(text= "OK")
             }
@@ -57,7 +66,10 @@ class ActivityPrediction : AppCompatActivity(R.layout.activity_prediction) {
                 title(text = "Выберите месяц замены")
                 listItems(items = listOf("Январь", "Февраль", "Март", "Апрель", "Май", "Июнь", "Июль", "Август",
                         "Сентябрь", "Октябрь", "Ноябрь", "Декабрь"),
-                        waitForPositiveButton = true, selection = { _, _, t -> (view as TextView).text = t })
+                        waitForPositiveButton = true, selection = { _, _, t ->
+                    (view as TextView).text = t
+                    month = t.toString()
+                })
 
                 positiveButton(text= "OK")
             }
@@ -69,12 +81,16 @@ class ActivityPrediction : AppCompatActivity(R.layout.activity_prediction) {
                     .setMessage("Расчет прогнозируемой даты...")
                     .setCancelable(false)
                     .build()
-            dialog!!.show()
-            Handler(Looper.getMainLooper()).postDelayed({
-                dialog.dismiss()
-                findViewById<TextView>(R.id.prediction).text = Random.nextInt(10, 40).toString()
-            }, 3000)
-
+            thread {
+                dialog!!.show()
+                val client = Socket("127.0.0.1", 9999)
+                client.outputStream.write("$colorSelected,$dep,$month".toByteArray())
+                client.close()
+                Handler(Looper.getMainLooper()).post {
+                    dialog.dismiss()
+                }
+            }
+//                findViewById<TextView>(R.id.prediction).text = Random.nextInt(10, 40).toString()
         }
     }
 
